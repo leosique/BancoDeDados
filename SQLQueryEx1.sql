@@ -30,7 +30,7 @@ values
 (310,'Josias',870.00,'B'),
 (250,'Mauricio',2930.00,'B');
 
-select * from VENDEDOR;
+select * from CLIENTE;
 
 create table PEDIDO(
 Num_Pedido integer primary key not null,
@@ -108,6 +108,7 @@ values
 
 insert into PEDIDO(Num_Pedido,Prazo_Entrega,Cod_Cliente,Cod_Vendedor)
 values
+(121,20,410,209),
 (97,20,720,101),
 (101,	15,	720,	101),
 (137,	20,	720,	720),
@@ -126,10 +127,12 @@ values
 (119,	30, 390,	250),
 (127,	10,	410,	11);
 
-select * from PEDIDO;
+select * from CLIENTE;
 
 insert into CLIENTE(Cod_Cliente,Nome_Cliente,Endereco,Cidade,CEP,UF,CNPJ,IE)
 values
+(720,'Ana','Rua 17 n. 19','Niterói',24358310,'RJ',12113231000134,2134),
+(870,'Flávio','Av. Pres. Vargas 10','São Paulo',22763931,'SP',2253412693879,4631),
 (110,'Jorge','Rua Caiapo 13','Curitiba',30078500,'PR',1451276498349,NULL),
 (222,'Lúcia','Rua Itabira 123 Loja 9','Belo Horizonte',22124391,'MG',2831521393488,2985),
 (830,'Mauricio','Av. Paulista 1236 s1/2345','São Paulo',3012683,'SP',3281698574656,9343),
@@ -239,4 +242,9 @@ select Desc_produto from PRODUTO where Uni_produto = 'M' and Valor_Unit = 1.05
 
  /*32- Apresentar os vendedores (ordenados) que emitiram pedidos com prazos de entrega superiores a 15 dias e tenham salários fixos iguais ou superiores a R$ 1.000,00.*/
  select distinct V.Nome_Vendedor, P.Prazo_Entrega from PEDIDO as P inner join VENDEDOR as V on P.Cod_Vendedor = V.Cod_Vendedor where P.Prazo_Entrega > 15 and V.Sal_Fixo > 999.99
- select * from VENDEDOR
+
+ /*33- Mostre os clientes (ordenados) que têm prazo de entrega maior que 15 dias para o produto 'QUEIJO' e sejam do Rio de Janeiro.*/
+ select C.Nome_Cliente from ITEM_DO_PEDIDO as I inner join PEDIDO as P on I.Num_Pedido = P.Num_Pedido inner join PRODUTO as PRO on I.Cod_Produto = PRO.Cod_Produto inner join CLIENTE as C on P.Cod_Cliente = C.Cod_Cliente where P.Prazo_Entrega > 15 and PRO.Desc_produto = 'Queijo' and C.UF = 'RJ' order by C.Nome_Cliente
+ 
+ /*34- Mostre todos os vendedores que venderam chocolate em quantidade superior a 10 Kg*/
+ select V.Nome_Vendedor from ITEM_DO_PEDIDO as I inner join PRODUTO as PRO on I.Cod_Produto = PRO.Cod_Produto inner join PEDIDO as P on I.Num_Pedido = P.Num_Pedido inner join VENDEDOR as V on P.Cod_Vendedor = V.Cod_Vendedor where I.Quantidade > 10 and PRO.Desc_produto = 'Chocolate'
